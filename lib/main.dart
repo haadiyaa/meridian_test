@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meridian_test/homepage.dart';
+import 'package:meridian_test/presentation/screens/homepage/view/homepage.dart';
 
 void main() {
   runApp(const MyApp());
