@@ -6,6 +6,8 @@ import 'package:meridian_test/data/model/mediamodel.dart';
 import 'package:meridian_test/presentation/bloc/bloc/social_bloc.dart';
 import 'package:meridian_test/presentation/screens/homepage/widgets/customlisttile.dart';
 import 'package:meridian_test/presentation/screens/homepage/widgets/filterwidget.dart';
+import 'package:meridian_test/presentation/screens/homepage/widgets/loadertile.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomePageWrapper extends StatelessWidget {
   const HomePageWrapper({super.key});
@@ -82,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                     separatorBuilder: (context, index) => const Divider(),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 15, vertical: 20),
-                    itemCount: 5,
+                    itemCount: mediaList!.media.length,
                     itemBuilder: (BuildContext context, int index) {
                       return CustomListTile(
                         index: index,
@@ -92,23 +94,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               }
-              return Expanded(
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => const Divider(),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                  itemCount: 5,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: MyAppColors.appBarBackgroundColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    );
-                  },
-                ),
-              );
+              return const LoaderTile();
             },
           ),
         ],
