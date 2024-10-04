@@ -37,6 +37,10 @@ class _HomePageState extends State<HomePage> {
 
   MediaList? mediaList;
 
+  Future refresh() async {
+    BlocProvider.of<SocialBloc>(context).add(FetchDataEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,17 +84,20 @@ class _HomePageState extends State<HomePage> {
               if (state is FetchedState) {
                 mediaList = state.mediaModel;
                 return Expanded(
-                  child: ListView.separated(
-                    separatorBuilder: (context, index) => const Divider(),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 20),
-                    itemCount: mediaList!.media.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return CustomListTile(
-                        index: index,
-                        mediaList: mediaList!,
-                      );
-                    },
+                  child: RefreshIndicator(
+                    onRefresh: refresh,
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => const Divider(),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 20),
+                      itemCount: mediaList!.media.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return CustomListTile(
+                          index: index,
+                          mediaList: mediaList!,
+                        );
+                      },
+                    ),
                   ),
                 );
               }
