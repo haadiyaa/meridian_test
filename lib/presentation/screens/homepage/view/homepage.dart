@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meridian_test/core/appcolors.dart';
 import 'package:meridian_test/core/appconstants.dart';
+import 'package:meridian_test/data/model/mediamodel.dart';
+import 'package:meridian_test/presentation/bloc/bloc/social_bloc.dart';
 import 'package:meridian_test/presentation/screens/homepage/widgets/customlisttile.dart';
 import 'package:meridian_test/presentation/screens/homepage/widgets/filterwidget.dart';
+
+class HomePageWrapper extends StatelessWidget {
+  const HomePageWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SocialBloc(),
+      child: HomePage(),
+    );
+  }
+}
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -12,6 +27,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<SocialBloc>(context).add(FetchDataEvent());
+  }
+
+  MediaList? mediaList;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,15 +73,43 @@ class _HomePageState extends State<HomePage> {
           ),
           AppConstants.mediumVerticalSpacing,
           const FilterWidget(),
-          Expanded(
-            child: ListView.separated(
-              separatorBuilder: (context, index) => const Divider(),
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              itemCount: 5,
-              itemBuilder: (BuildContext context, int index) {
-                return const CustomListTile();
-              },
-            ),
+          BlocBuilder<SocialBloc, SocialState>(
+            builder: (context, state) {
+              if (state is FetchedState) {
+                mediaList = state.mediaModel;
+                return Expanded(
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => const Divider(),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 20),
+                    itemCount: 5,
+                    itemBuilder: (BuildContext context, int index) {
+                      return CustomListTile(
+                        index: index,
+                        mediaList: mediaList!,
+                      );
+                    },
+                  ),
+                );
+              }
+              return Expanded(
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => const Divider(),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                  itemCount: 5,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: MyAppColors.appBarBackgroundColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
           ),
         ],
       ),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:meridian_test/core/appcolors.dart';
 import 'package:meridian_test/core/appconstants.dart';
+import 'package:meridian_test/data/model/mediamodel.dart';
 
 class Detailspage extends StatelessWidget {
-  const Detailspage({super.key});
+  const Detailspage({super.key, required this.mediaList});
+
+  final MediaModel mediaList;
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +17,15 @@ class Detailspage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Title',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+              mediaList.title,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
             ),
             AppConstants.mediumVerticalSpacing,
             Text(
-              'hgfdfgfcgh',
-              style: TextStyle(
+              mediaList.body,
+              style: const TextStyle(
                 fontWeight: FontWeight.w500,
-                color: MyAppColors.textColor,
+                color: Color.fromARGB(255, 51, 11, 11),
                 fontSize: 16,
               ),
             ),

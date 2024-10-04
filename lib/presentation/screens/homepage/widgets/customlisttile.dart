@@ -1,26 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:meridian_test/core/appcolors.dart';
 import 'package:meridian_test/core/appconstants.dart';
+import 'package:meridian_test/data/model/mediamodel.dart';
 import 'package:meridian_test/presentation/screens/detailspage/view/detailspage.dart';
 
 class CustomListTile extends StatelessWidget {
   const CustomListTile({
     super.key,
+    required this.mediaList,
+    required this.index,
   });
+
+  final MediaList mediaList;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (_) => Detailspage()));
+            context,
+            MaterialPageRoute(
+                builder: (_) => Detailspage(
+                      mediaList: mediaList.media[index],
+                    )));
       },
-      child: const Padding(
-        padding: EdgeInsets.all(8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               child: Image(
                 image: AssetImage(AppConstants.usersProfileImage),
               ),
@@ -32,12 +42,12 @@ class CustomListTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(right: 15.0),
+                    padding: const EdgeInsets.only(right: 15.0),
                     child: Text(
-                      'hdgfufguysdfguysfgusdgfbgftttftrrrnhsbdwhydfwfdjhgfvghytfcgfhdrd',
-                      style: TextStyle(
+                      mediaList.media[index].body,
+                      style: const TextStyle(
                         fontWeight: FontWeight.w500,
-                        color: MyAppColors.textColor,
+                        color: Color.fromARGB(255, 65, 17, 17),
                         fontSize: 16,
                       ),
                       maxLines: 3,
@@ -45,7 +55,7 @@ class CustomListTile extends StatelessWidget {
                     ),
                   ),
                   AppConstants.mediumVerticalSpacing,
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
